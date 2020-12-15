@@ -48,12 +48,14 @@ class TasksController extends Controller
             'content' => 'required|max:255',
             
             ]);
+    if (\Auth::check()){
         $task = new Task;
         $task->content = $request->content;
         $task->status = $request->status;
         $task->save();
-        
+    }  
         return redirect('/');
+    
     }
 
     /**
