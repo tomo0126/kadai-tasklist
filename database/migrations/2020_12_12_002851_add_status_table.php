@@ -16,8 +16,8 @@ class AddStatusTable extends Migration
         Schema::table('tasks', function (Blueprint $table) {
             $table->string('status', 10);
         });
-    }
 
+}
     /**
      * Reverse the migrations.
      *
