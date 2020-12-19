@@ -80,10 +80,11 @@ class TasksController extends Controller
     {
        
         $task = Task::findOrFail($id);
-        
+
         return view('tasks.show',[
             'task' => $task,
             ]);
+        
     }
 
     /**
@@ -117,10 +118,11 @@ class TasksController extends Controller
         // idの値でタスクを検索して取得
         $task = Task::findOrFail($id);
         // メッセージを更新
+         if (\Auth::id() === $task->user_id) {
         $task->content = $request->content;
         $task->status = $request->status;
         $task->save();
-
+         }
         // トップページへリダイレクトさせる
         return redirect('/');
     }
@@ -136,7 +138,9 @@ class TasksController extends Controller
          // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
         // メッセージを削除
-        $task->delete();
+        if (\Auth::id() === $task->user_id) {
+            $micropost->delete();
+        }
 
         // トップページへリダイレクトさせる
         return redirect('/');
