@@ -65,9 +65,7 @@ class TasksController extends Controller
         $task->status = $request->status;
        $task->user_id = $request->user()->id;
         $task->save();
-    }else{
-            return view('layouts.app');
-        }  
+    }
         return redirect('/');
     
     }
@@ -82,10 +80,13 @@ class TasksController extends Controller
     {
        
         $task = Task::findOrFail($id);
-
+       if (\Auth::id() === $task->user_id) {
         return view('tasks.show',[
             'task' => $task,
             ]);
+       }else{
+           return redirect('/');
+       }
         
     }
 
@@ -103,9 +104,9 @@ class TasksController extends Controller
             'task' => $task,
             ]);
         }else{
-            return view('layouts.app');
+            return redirect('/');
         }
-        return redirect('/');
+        
     }
 
     /**
@@ -128,9 +129,7 @@ class TasksController extends Controller
         $task->content = $request->content;
         $task->status = $request->status;
         $task->save();
-         }else{
-            return view('layouts.app');
-        }
+         }
         // トップページへリダイレクトさせる
         return redirect('/');
     }
@@ -148,8 +147,6 @@ class TasksController extends Controller
         // メッセージを削除
         if (\Auth::id() === $task->user_id) {
             $task->delete();
-        }else{
-            return view('layouts.app');
         }
 
         // トップページへリダイレクトさせる
